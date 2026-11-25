@@ -17,7 +17,7 @@ One serious and two moderate accessibility findings were raised, fixed, and re-v
 | `npm run check` | Pass — 0 errors, 0 warnings in `src/` |
 | Console errors (Chromium/Firefox/Webkit) | Pass — 0 console/page errors on `/`, `/resume`, 404 across all 3 engines |
 | `npm audit` | Pass — 0 vulnerabilities, 398 resolved packages |
-| Secret scan | Pass — no secrets found; repo has no git history yet either |
+| Secret scan | Pass — no secrets found in tracked files or commit history |
 
 ## Functional
 
@@ -65,4 +65,10 @@ No block. 0 dependency vulnerabilities, no secrets anywhere in the repo, both `t
 
 ## Deployment
 
-Not yet performed — pending explicit user approval (see project status). `.github/workflows/deploy.yml` is written and ready; local dry-run equivalent (production build + Lighthouse against it) already validated above.
+**Live** at https://r3njunair.github.io/, deployed via `.github/workflows/deploy.yml` on GitHub Pages. Independently re-verified against the live URL (not just the local build): `/` and `/resume/` return 200, `/resume.pdf` returns 200 as valid `application/pdf`, a bad path returns 404 with the custom 404 page, `robots.txt` and `sitemap-index.xml` are correct, and canonical/OG/Twitter/JSON-LD metadata in the served HTML match `BaseLayout.astro`'s output exactly.
+
+Two issues surfaced and fixed during the deploy itself (not caught by pre-deploy testing, since they only manifest in the GitHub Actions/Pages environment):
+- `package-lock.json` had baked-in `resolved` URLs pointing to an internal Ubisoft Artifactory npm mirror (from the local dev machine's npm config), which GitHub's runner couldn't reach (`ENOTFOUND`). Fixed by regenerating the lockfile against the public npm registry.
+- GitHub's root/user-site repo-name matching is case-sensitive against the account name. The repo was initially created as `renjunair.github.io` (lowercase) under account `R3njunair`, which GitHub served as an ordinary project site at a subpath instead of the root domain. Fixed by renaming the repo to `R3njunair.github.io`.
+
+An independent final-auditor pass (fresh agent, no prior context) re-ran the build/typecheck, re-verified the live site via `curl`, checked git hygiene and commit history, and cross-checked content for internal consistency. Verdict: **PASS**, no code/security/deployment defects found.
