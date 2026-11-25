@@ -1,0 +1,26 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+}
+
+const { eyebrow, title, lede } = Astro.props;
+---
+
+<div class="section-heading">
+  {eyebrow && <p class="section-eyebrow">{eyebrow}</p>}
+  <h2>{title}</h2>
+  {lede && <p class="section-heading__lede">{lede}</p>}
+</div>
+
+<style>
+  .section-heading {
+    margin-bottom: 2.5rem;
+  }
+
+  .section-heading__lede {
+    color: var(--ink-muted);
+    font-size: 1.05rem;
+  }
+</style>

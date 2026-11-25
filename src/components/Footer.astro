@@ -1,0 +1,36 @@
+---
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p>© {year} {site.name}.</p>
+    <p class="site-footer__privacy">
+      {site.goatcounterCode
+        ? 'This site uses a cookieless, privacy-friendly visit counter (GoatCounter). No personal data is collected.'
+        : 'This site uses no cookies, trackers, or analytics.'}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding-block: 2rem;
+    color: var(--ink-muted);
+    font-size: 0.85rem;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: space-between;
+  }
+
+  .site-footer__privacy {
+    margin: 0;
+  }
+</style>

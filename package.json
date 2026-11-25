@@ -1,0 +1,28 @@
+{
+  "name": "renju-nair-portfolio",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "resume:pdf": "node scripts/generate-resume-pdf.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "astro": "^7.4.13",
+    "@astrojs/sitemap": "^3.6.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.9.3",
+    "@playwright/test": "^1.56.1",
+    "@axe-core/playwright": "^4.10.2"
+  }
+}

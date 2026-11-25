@@ -1,0 +1,192 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { skillGroups } from '../data/skills';
+import { certifications, education } from '../data/certifications';
+
+const experience = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+const renderedExperience = await Promise.all(experience.map((entry) => render(entry)));
+---
+
+<BaseLayout
+  title={`Résumé — ${site.name}`}
+  description={`Printable résumé for ${site.name}, ${site.headline}.`}
+  path="/resume"
+>
+  <div class="resume-toolbar no-print">
+    <a href="/#home">← Back to site</a>
+    <div class="button-row" style="margin-top:0;">
+      <button type="button" onclick="window.print()" class="button button--primary">Print / Save as PDF</button>
+      <a class="button button--secondary" href="/resume.pdf" download>Download PDF</a>
+    </div>
+  </div>
+
+  <main id="main" class="resume-page">
+    <header class="resume-header">
+      <h1>{site.name}</h1>
+      <p class="resume-header__headline">{site.headline}</p>
+      <p class="resume-header__contact">
+        {site.locationPublic ? site.location : ''}
+        {' · '}{site.email}
+        {site.phonePublic ? ` · ${site.phone}` : ''}
+        {' · '}{site.linkedin.replace('https://www.', '')}
+      </p>
+    </header>
+
+    <section>
+      <h2>Summary</h2>
+      <p>{site.summary}</p>
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      {skillGroups.map((group) => (
+        <p class="resume-skill-group">
+          <strong>{group.title}:</strong> {group.items.join(', ')}
+        </p>
+      ))}
+    </section>
+
+    <section>
+      <h2>Experience</h2>
+      {experience.map((entry, index) => {
+        const { Content } = renderedExperience[index];
+        return (
+          <article class="resume-role">
+            <div class="resume-role__header">
+              <h3>{entry.data.title} — {entry.data.company}</h3>
+              <span>{entry.data.startDate} – {entry.data.endDate}</span>
+            </div>
+            {entry.data.titlesWorkedOn && entry.data.titlesWorkedOn.length > 0 && (
+              <p class="resume-role__titles">{entry.data.titlesWorkedOn.join(', ')}</p>
+            )}
+            <div class="resume-role__body">
+              <Content />
+            </div>
+          </article>
+        );
+      })}
+    </section>
+
+    <section>
+      <h2>Certifications</h2>
+      <ul>
+        {certifications.map((cert) => (
+          <li>{cert.name}{cert.issuer ? ` — ${cert.issuer}` : ''}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <p>{education.credential} — {education.institution} ({education.year})</p>
+    </section>
+
+    <section>
+      <h2>Languages</h2>
+      <p>{site.languages.join(', ')}</p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .resume-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem clamp(1.25rem, 4vw, 2.5rem);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .resume-page {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.5rem clamp(1.25rem, 4vw, 2.5rem) 4rem;
+  }
+
+  .resume-header h1 {
+    margin-bottom: 0.25rem;
+  }
+
+  .resume-header__headline {
+    font-weight: 600;
+  }
+
+  .resume-header__contact {
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+
+  .resume-page section {
+    margin-top: 2rem;
+  }
+
+  .resume-page h2 {
+    font-size: 1.3rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.3rem;
+  }
+
+  .resume-skill-group {
+    font-size: 0.95rem;
+    margin: 0.4rem 0;
+  }
+
+  .resume-role {
+    margin-bottom: 1.5rem;
+  }
+
+  .resume-role__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    align-items: baseline;
+  }
+
+  .resume-role__header h3 {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .resume-role__header span {
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+  }
+
+  .resume-role__titles {
+    font-style: italic;
+    color: var(--ink-muted);
+    margin: 0.2rem 0 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .resume-role__body :global(ul) {
+    padding-left: 1.1rem;
+    margin: 0.5rem 0;
+  }
+
+  .resume-role__body :global(li) {
+    margin-bottom: 0.35rem;
+    font-size: 0.95rem;
+  }
+
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+
+    .resume-page {
+      max-width: none;
+      padding: 0;
+    }
+
+    a {
+      color: var(--ink) !important;
+      text-decoration: none;
+    }
+  }
+</style>

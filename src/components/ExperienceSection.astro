@@ -1,0 +1,132 @@
+---
+import { getCollection, render } from 'astro:content';
+import SectionHeading from './SectionHeading.astro';
+
+const entries = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(entries.map((entry) => render(entry)));
+---
+
+<section id="experience" class="section experience">
+  <div class="container">
+    <SectionHeading
+      eyebrow="Experience"
+      title="Where I've led quality"
+      lede="Eleven years across Ubisoft Abu Dhabi, Dynamic Next Technologies, and Ruby Seven Studios -- from junior QA engineer to QA Lead owning release sign-off."
+    />
+
+    <ol class="timeline">
+      {entries.map((entry, index) => {
+        const { Content } = rendered[index];
+        return (
+          <li class="timeline__item">
+            <div class="timeline__header">
+              <h3>{entry.data.title}</h3>
+              <p class="timeline__company">{entry.data.company}{entry.data.location ? ` · ${entry.data.location}` : ''}</p>
+              <p class="timeline__dates">{entry.data.startDate} – {entry.data.endDate}</p>
+              {entry.data.titlesWorkedOn && entry.data.titlesWorkedOn.length > 0 && (
+                <ul class="timeline__titles">
+                  {entry.data.titlesWorkedOn.map((t: string) => (
+                    <li>{t}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <details class="timeline__details">
+              <summary>Show responsibilities &amp; impact</summary>
+              <div class="timeline__body">
+                <Content />
+              </div>
+            </details>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .timeline__item {
+    border-left: 2px solid var(--border);
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .timeline__item::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 0.4rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
+
+  .timeline__header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .timeline__company {
+    margin: 0.2rem 0 0;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .timeline__dates {
+    margin: 0.1rem 0 0;
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+  }
+
+  .timeline__titles {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+  }
+
+  .timeline__titles li {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink-muted);
+  }
+
+  .timeline__details {
+    margin-top: 1rem;
+  }
+
+  .timeline__details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--accent);
+    min-height: 24px;
+    padding: 0.25rem 0;
+  }
+
+  .timeline__body :global(ul) {
+    padding-left: 1.1rem;
+  }
+
+  .timeline__body :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline__body :global(p) {
+    color: var(--ink-muted);
+  }
+</style>

@@ -1,0 +1,239 @@
+:root {
+  --font-display: ui-serif, Charter, 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --bg: #faf6f1;
+  --bg-elevated: #ffffff;
+  --surface: #f2e9df;
+  --ink: #211d1a;
+  --ink-muted: #5b544f;
+  --accent: #a64c21;
+  --accent-contrast: #ffffff;
+  --border: #e1d5c6;
+  --border-strong: #8f7c66;
+  --focus-ring: #1557c2;
+
+  --max-width: 72rem;
+  --measure: 38rem;
+  --radius: 0.5rem;
+  --space-section: clamp(3.5rem, 8vw, 7rem);
+}
+
+:root[data-theme='dark'] {
+  --bg: #1a1714;
+  --bg-elevated: #211d1a;
+  --surface: #2a241f;
+  --ink: #f3ece3;
+  --ink-muted: #b9afa5;
+  --accent: #e2904f;
+  --accent-contrast: #1a1714;
+  --border: #3a322b;
+  --focus-ring: #8ab4ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #1a1714;
+    --bg-elevated: #211d1a;
+    --surface: #2a241f;
+    --ink: #f3ece3;
+    --ink-muted: #b9afa5;
+    --accent: #e2904f;
+    --accent-contrast: #1a1714;
+    --border: #3a322b;
+    --border-strong: #71675c;
+    --focus-ring: #8ab4ff;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  font-size: 1.0625rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+h1 {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+p {
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.section {
+  padding-block: var(--space-section);
+  scroll-margin-top: 5rem;
+}
+
+.section-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.5rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius);
+  z-index: 100;
+  transition: top 0.15s ease;
+  font-weight: 600;
+}
+
+.skip-link:focus-visible {
+  top: 1rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.button--primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.button--primary:hover {
+  background: var(--accent);
+  opacity: 0.9;
+}
+
+.button--secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+
+.button--secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

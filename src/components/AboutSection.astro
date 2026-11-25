@@ -1,0 +1,30 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { site } from '../data/site';
+
+const contactParts = [
+  site.locationPublic ? site.location : null,
+  site.languages.length ? `Speaks ${site.languages.join(', ')}` : null,
+].filter(Boolean);
+---
+
+<section id="about" class="section about">
+  <div class="container">
+    <SectionHeading eyebrow="About" title="QA leadership that ships, not just tests" />
+    <p class="about__summary">{site.summary}</p>
+    {contactParts.length > 0 && (
+      <p class="about__meta">{contactParts.join(' · ')}</p>
+    )}
+  </div>
+</section>
+
+<style>
+  .about__summary {
+    font-size: 1.05rem;
+  }
+
+  .about__meta {
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+</style>

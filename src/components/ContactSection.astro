@@ -1,0 +1,66 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { site } from '../data/site';
+---
+
+<section id="contact" class="section contact">
+  <div class="container">
+    <SectionHeading eyebrow="Contact" title="Let's talk about QA, release quality, or AI-assisted testing" />
+
+    <ul class="contact-list">
+      <li>
+        <span class="contact-list__label">Email</span>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </li>
+      {site.phonePublic && (
+        <li>
+          <span class="contact-list__label">Phone</span>
+          <a href={`tel:${site.phone.replace(/\s+/g, '')}`}>{site.phone}</a>
+        </li>
+      )}
+      <li>
+        <span class="contact-list__label">LinkedIn</span>
+        <a href={site.linkedin} target="_blank" rel="noopener noreferrer">linkedin.com/in/renju-nair</a>
+      </li>
+      <li>
+        <span class="contact-list__label">GitHub</span>
+        <a href={site.github} target="_blank" rel="noopener noreferrer">github.com/R3njunair</a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .contact-list__label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 0.2rem;
+  }
+
+  .contact-list a {
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding-block: 0.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .contact-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

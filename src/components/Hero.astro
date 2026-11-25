@@ -1,0 +1,128 @@
+---
+import { site } from '../data/site';
+---
+
+<section id="home" class="hero section">
+  <div class="container hero__grid">
+    <div class="hero__content">
+      <p class="section-eyebrow">{site.locationPublic ? site.location : 'Based in the Gulf region'}</p>
+      <h1>{site.name}</h1>
+      <p class="hero__headline">{site.headline}</p>
+      <p class="hero__tagline">{site.tagline}</p>
+
+      <div class="button-row">
+        <a class="button button--primary" href="#contact">Contact me</a>
+        <a class="button button--secondary" href="/resume.pdf" download>Download résumé</a>
+        <a class="button button--secondary" href="#impact">View projects</a>
+      </div>
+    </div>
+
+    <div class="hero__media">
+      {site.hasPhoto ? (
+        <img src={site.photoPath} alt={site.photoAlt} width="280" height="280" class="hero__photo" />
+      ) : (
+        <div class="hero__monogram" role="img" aria-label={`${site.name} monogram`}>RN</div>
+      )}
+    </div>
+  </div>
+
+  <div class="container">
+    <dl class="at-a-glance">
+      {site.atAGlance.map((stat) => (
+        <div class="at-a-glance__item">
+          <dt>{stat.label}</dt>
+          <dd>{stat.detail}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .hero__headline {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink);
+    max-width: 40rem;
+  }
+
+  .hero__tagline {
+    color: var(--ink-muted);
+  }
+
+  .hero__media {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero__photo {
+    border-radius: 999px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+
+  .hero__monogram {
+    width: 220px;
+    height: 220px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .at-a-glance {
+    margin: 3rem 0 0;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .at-a-glance__item dt {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .at-a-glance__item dd {
+    margin: 0.15rem 0 0;
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+  }
+
+  @media (min-width: 640px) {
+    .at-a-glance {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hero__grid {
+      grid-template-columns: 3fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .at-a-glance {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+</style>

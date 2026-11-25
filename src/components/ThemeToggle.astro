@@ -1,0 +1,51 @@
+---
+---
+<button
+  id="theme-toggle"
+  class="theme-toggle"
+  type="button"
+  aria-pressed="false"
+>
+  <span class="visually-hidden">Toggle dark mode</span>
+  <span aria-hidden="true" class="theme-toggle__icon">◐</span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 24px;
+    min-height: 24px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 1.1rem;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const STORAGE_KEY = 'theme-preference';
+    const root = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+
+    toggle?.setAttribute('aria-pressed', String(root.getAttribute('data-theme') === 'dark'));
+
+    toggle?.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      localStorage.setItem(STORAGE_KEY, next);
+      root.setAttribute('data-theme', next);
+      toggle.setAttribute('aria-pressed', String(next === 'dark'));
+    });
+  })();
+</script>

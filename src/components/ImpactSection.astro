@@ -1,0 +1,60 @@
+---
+import { getCollection, render } from 'astro:content';
+import SectionHeading from './SectionHeading.astro';
+
+const entries = (await getCollection('impact')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(entries.map((entry) => render(entry)));
+---
+
+<section id="impact" class="section impact">
+  <div class="container">
+    <SectionHeading
+      eyebrow="Impact"
+      title="Selected case studies"
+      lede="Three shipped titles where process, automation, and leadership changed the outcome."
+    />
+
+    <div class="grid grid--3">
+      {entries.map((entry, index) => {
+        const { Content } = rendered[index];
+        return (
+          <article class="card impact-card">
+            <p class="impact-card__metric">{entry.data.metric}</p>
+            <h3>{entry.data.title}</h3>
+            <p class="impact-card__company">{entry.data.company}</p>
+            <div class="impact-card__body">
+              <Content />
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .impact-card__metric {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0 0 0.75rem;
+  }
+
+  .impact-card h3 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  .impact-card__company {
+    color: var(--ink-muted);
+    font-weight: 600;
+    margin: 0.2rem 0 1rem;
+    font-size: 0.9rem;
+  }
+
+  .impact-card__body :global(p) {
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+</style>
